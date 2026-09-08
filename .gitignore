@@ -1,0 +1,3 @@
+# Root-level env file, used by docker-compose.yml. Never commit real secrets.
+.env
+.env.local

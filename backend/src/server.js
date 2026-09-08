@@ -2,6 +2,9 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import { createServer } from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Server } from 'socket.io';
 import {
   clearTokenCookie,
@@ -12,8 +15,15 @@ import {
 } from './auth.js';
 import { db } from './db.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 4000;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+
+// When the frontend has been built (npm run build in ../frontend), its
+// static output is served straight from this same process. That's what
+// lets PairChat deploy as a single unit instead of two services.
+const frontendDist = path.resolve(__dirname, '../../frontend/dist');
+const hasFrontendBuild = fs.existsSync(path.join(frontendDist, 'index.html'));
 
 const app = express();
 app.use(express.json());
@@ -46,6 +56,15 @@ app.get('/api/messages', requireAuth, (req, res) => {
 });
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+
+if (hasFrontendBuild) {
+  app.use(express.static(frontendDist));
+  // SPA fallback: anything that isn't /api/* or a real static file goes to
+  // index.html so client-side routing (and a hard refresh on /chat) works.
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
