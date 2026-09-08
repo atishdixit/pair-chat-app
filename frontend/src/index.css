@@ -1,0 +1,59 @@
+:root {
+  --bg: #f5eff2;
+  --surface: #ffffff;
+  --surface-2: #ece1e6;
+  --text: #241a20;
+  --text-muted: #6b5a60;
+  --border: #ddd0d4;
+  --accent: #b6486b;
+  --accent-contrast: #fff6f8;
+  --accent-2: #4d7a68;
+  --accent-2-contrast: #f2f9f6;
+  --danger: #a23b2e;
+  --shadow: 0 1px 2px rgba(36, 26, 32, 0.07), 0 10px 26px -14px rgba(36, 26, 32, 0.22);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #160f13;
+    --surface: #1e151a;
+    --surface-2: #271b21;
+    --text: #f3e9eb;
+    --text-muted: #b39aa1;
+    --border: #3a2a31;
+    --accent: #e589a1;
+    --accent-contrast: #2c0f17;
+    --accent-2: #7fb39e;
+    --accent-2-contrast: #0c1e18;
+    --danger: #d9705f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 26px -14px rgba(0, 0, 0, 0.6);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-loading {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
