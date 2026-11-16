@@ -1,0 +1,34 @@
+# Render Blueprint for PairChat.
+# Render dashboard -> New -> Blueprint -> pick this repo. Full walkthrough: docs/DEPLOY_RENDER.md
+#
+# Free plan limits: the service sleeps after 15 minutes without traffic, and the
+# filesystem is wiped on every restart/redeploy/sleep, so chat history does not
+# survive. The two accounts are re-seeded on every start, so login always works.
+
+services:
+  - type: web
+    name: pairchat
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PORT
+        value: "4000"
+      - key: DB_PATH
+        value: /app/backend/data/pairchat.db
+      - key: JWT_SECRET
+        generateValue: true
+      # Values below are asked for in the dashboard when the Blueprint is created.
+      - key: USER1_NAME
+        sync: false
+      - key: USER1_PASSWORD
+        sync: false
+      - key: USER2_NAME
+        sync: false
+      - key: USER2_PASSWORD
+        sync: false

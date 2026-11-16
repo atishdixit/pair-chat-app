@@ -4,7 +4,7 @@ A private messaging app for exactly two people. One conversation, no contact lis
 
 - **Architecture & flow diagrams:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Stack:** React + Vite · Node.js + Express + Socket.IO · SQLite
-- **Recommended host:** [Fly.io](https://fly.io) (see [Deploying](#deploying))
+- **Hosting:** [Render](https://render.com) free plan for testing ([step-by-step guide](docs/DEPLOY_RENDER.md)), or [Fly.io](https://fly.io) (see [Deploying](#deploying))
 
 ## Quick start (Windows)
 
@@ -79,7 +79,13 @@ Real-time, over the same origin via Socket.IO (auth via the same cookie):
 
 ## Deploying
 
-### Fly.io (recommended)
+### Render (free, for testing)
+
+The repo includes a Render Blueprint (`render.yaml`). In the Render dashboard choose **New → Blueprint**, pick this repo, enter the two names and passwords, and deploy. Every step, plus troubleshooting, is in **[docs/DEPLOY_RENDER.md](docs/DEPLOY_RENDER.md)**.
+
+The free plan sleeps after 15 minutes idle and wipes its disk on restart, so chat history is not kept there.
+
+### Fly.io
 
 A real always-on VM, not serverless — the WebSocket and a persistent volume for the SQLite file both just work, no extra plumbing.
 
@@ -106,9 +112,11 @@ pairchat/
 ├── Dockerfile              multi-stage: builds frontend, runs backend
 ├── docker-compose.yml      local containerized run, with a data volume
 ├── fly.toml                Fly.io deploy config
+├── render.yaml             Render Blueprint (docs/DEPLOY_RENDER.md)
 ├── setup.bat               one-time install + .env + seed
 ├── run.bat                 one-click local start
 ├── docs/ARCHITECTURE.md    component map + message-flow diagrams
+├── docs/DEPLOY_RENDER.md   step-by-step Render deployment
 ├── backend/                Express + Socket.IO + SQLite
 └── frontend/                React + Vite
 ```
